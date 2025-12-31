@@ -6,98 +6,139 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at bottom, #020024, #090979, #000);
-  color: white;
-  overflow: hidden;
-  text-align: center;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:radial-gradient(circle at bottom,#020024,#090979,#000);
+  color:white;
+  overflow:hidden;
+  text-align:center;
 }
 
-/* Canvas layers */
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
+/* CANVAS */
+canvas{position:fixed;top:0;left:0}
+
+/* MAIN */
+.container{
+  position:relative;
+  z-index:10;
+  padding-top:20px;
+  animation:fadeZoom 1.5s ease-out;
 }
 
-/* Main content */
-.container {
-  position: relative;
-  z-index: 5;
-  padding-top: 20px;
+@keyframes fadeZoom{
+  from{opacity:0;transform:scale(.8)}
+  to{opacity:1;transform:scale(1)}
 }
 
-/* Neon name */
-.neon {
-  font-size: 3.5rem;
-  color: #0ff;
+/* NEON NAME */
+.neon{
+  font-size:3.8rem;
+  color:#0ff;
   text-shadow:
-    0 0 5px #0ff,
-    0 0 15px #0ff,
-    0 0 30px #0ff;
-  animation: flicker 1.5s infinite alternate;
+    0 0 10px #0ff,
+    0 0 30px #0ff,
+    0 0 60px #0ff;
+  animation:pulse 2s infinite alternate, floatName 6s infinite ease-in-out;
 }
 
-@keyframes flicker {
-  from { opacity: 1; }
-  to { opacity: 0.8; }
+@keyframes pulse{
+  from{text-shadow:0 0 10px #0ff}
+  to{text-shadow:0 0 80px #0ff}
+}
+@keyframes floatName{
+  50%{transform:translateY(-10px)}
 }
 
-.cake { font-size: 4rem; }
-
-/* Slideshow */
-.slideshow {
-  width: 220px;
-  height: 220px;
-  margin: 15px auto;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4px solid #0ff;
+/* CAKE */
+.cake{
+  font-size:4.5rem;
+  animation:spin 6s infinite linear, bounce 2s infinite;
 }
 
-.slideshow img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+@keyframes spin{
+  from{transform:rotateY(0)}
+  to{transform:rotateY(360deg)}
+}
+@keyframes bounce{
+  50%{transform:translateY(-10px)}
 }
 
-/* Drag drop */
-.drop {
-  border: 2px dashed #0ff;
-  padding: 10px;
-  width: 80%;
-  max-width: 300px;
-  margin: 10px auto;
-  border-radius: 10px;
-  cursor: pointer;
+/* SLIDESHOW */
+.slideshow{
+  width:230px;height:230px;
+  margin:15px auto;
+  border-radius:50%;
+  overflow:hidden;
+  border:5px solid #0ff;
+  box-shadow:0 0 30px #0ff;
+  animation:glow 3s infinite alternate;
 }
 
-/* Buttons */
-button {
-  margin: 8px;
-  padding: 12px 20px;
-  border-radius: 25px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
+@keyframes glow{
+  from{box-shadow:0 0 20px #0ff}
+  to{box-shadow:0 0 60px #0ff}
 }
 
-.play { background: #00e5ff; }
-.share { background: #25D366; color: white; }
-.insta { background: #E1306C; color: white; }
-
-/* Balloons */
-.balloon {
-  position: fixed;
-  bottom: -100px;
-  font-size: 2.5rem;
-  animation: float 10s linear infinite;
+.slideshow img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-@keyframes float {
-  to { transform: translateY(-120vh); }
+/* DROP */
+.drop{
+  border:2px dashed #0ff;
+  padding:12px;
+  width:80%;
+  max-width:320px;
+  margin:10px auto;
+  border-radius:12px;
+  animation:blink 1.5s infinite alternate;
+}
+@keyframes blink{
+  from{opacity:.6}
+  to{opacity:1}
+}
+
+/* BUTTONS */
+button{
+  margin:8px;
+  padding:12px 22px;
+  border-radius:30px;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+}
+button:hover{transform:scale(1.1)}
+
+.play{background:#00e5ff}
+.share{background:#25D366;color:white}
+.insta{background:#E1306C;color:white}
+
+/* BALLOONS */
+.balloon{
+  position:fixed;
+  bottom:-100px;
+  font-size:2.8rem;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+  to{transform:translateY(-130vh)}
+}
+
+/* SPARKLES */
+.sparkle{
+  position:fixed;
+  width:4px;height:4px;
+  background:white;
+  border-radius:50%;
+  animation:twinkle 3s infinite;
+}
+@keyframes twinkle{
+  50%{opacity:.2;transform:scale(0)}
 }
 </style>
 </head>
@@ -107,17 +148,14 @@ button {
 <canvas id="fireworks"></canvas>
 <canvas id="confetti"></canvas>
 
-<!-- Music -->
-<audio id="song" autoplay loop>
+<audio id="song" loop>
   <source src="./birthday.mp3">
 </audio>
-
-<!-- Voice -->
 <audio id="voice">
-  <source src="voice.mp3">
+  <source src="./voice.mp3">
 </audio>
 
-<div class="container" style="padding:3%;">
+<div class="container">
   <h1>🎉 Happy Birthday 🎉</h1>
   <div class="neon">PRAJWAL</div>
   <div class="cake">🎂</div>
@@ -127,88 +165,94 @@ button {
   </div>
 
   <div class="drop" id="drop">
+    Drag & Drop Photos Here 📸
   </div>
 
-  <p>
-    May your life shine as bright as these fireworks ✨
-  </p>
+  <p>May your life shine brighter than these fireworks ✨</p>
 
-  <button class="play" onclick="voice.play()">🎤 Play Voice Message</button><br>
-
+  <button class="play" onclick="voice.play()">🎤 Voice Message</button><br>
   <button class="share" onclick="shareWhatsApp()">📱 WhatsApp</button>
-  <button class="insta" onclick="alert('📸 Take screenshot & share on Instagram Story!')">📸 Instagram</button>
+  <button class="insta" onclick="alert('📸 Screenshot & share on Instagram Story!')">📸 Instagram</button>
 </div>
 
 <script>
-/* AUTO PLAY FIX */
-  song.play()
-// document.addEventListener('click',()=>,{once:true});
+/* AUDIO FIX */
+document.body.addEventListener("click",()=>{
+  song.play();
+},{once:true});
 
-/* SLIDESHOW + DRAG DROP */
-let images=[], index=0;
+/* SLIDESHOW */
+let images=[],i=0;
 const slide=document.getElementById("slide");
-const drop=document.getElementById("drop");
-
 drop.ondragover=e=>e.preventDefault();
 drop.ondrop=e=>{
   e.preventDefault();
   images=[...e.dataTransfer.files].map(f=>URL.createObjectURL(f));
   slide.src=images[0];
   setInterval(()=>{
-    index=(index+1)%images.length;
-    slide.src=images[index];
+    i=(i+1)%images.length;
+    slide.src=images[i];
   },2000);
 };
 
 /* BALLOONS */
-for(let i=0;i<15;i++){
+for(let i=0;i<20;i++){
   let b=document.createElement("div");
   b.className="balloon";
   b.style.left=Math.random()*100+"vw";
-  b.style.animationDuration=(6+Math.random()*6)+"s";
+  b.style.animationDuration=(5+Math.random()*6)+"s";
   b.textContent="🎈";
   document.body.appendChild(b);
 }
 
+/* SPARKLES */
+for(let i=0;i<80;i++){
+  let s=document.createElement("div");
+  s.className="sparkle";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  s.style.animationDelay=Math.random()*3+"s";
+  document.body.appendChild(s);
+}
+
 /* CONFETTI */
 const c=document.getElementById("confetti");
-const cx=c.getContext("2d");
+const ctx=c.getContext("2d");
 c.width=innerWidth;c.height=innerHeight;
-let conf=[];
-for(let i=0;i<150;i++){
-  conf.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*6});
-}
+let conf=[...Array(200)].map(()=>({
+  x:Math.random()*c.width,
+  y:Math.random()*c.height,
+  r:Math.random()*6,
+  d:Math.random()*5
+}));
 function confetti(){
-  cx.clearRect(0,0,c.width,c.height);
+  ctx.clearRect(0,0,c.width,c.height);
   conf.forEach(p=>{
-    cx.fillStyle=`hsl(${Math.random()*360},100%,50%)`;
-    cx.fillRect(p.x,p.y,p.r,p.r);
-    p.y+=2;
+    ctx.fillStyle=`hsl(${Math.random()*360},100%,50%)`;
+    ctx.fillRect(p.x,p.y,p.r,p.r);
+    p.y+=p.d;
     if(p.y>c.height)p.y=0;
   });
   requestAnimationFrame(confetti);
 }
 confetti();
 
-/* NAME FIREWORKS */
+/* FIREWORKS */
 const f=document.getElementById("fireworks");
 const fx=f.getContext("2d");
 f.width=innerWidth;f.height=innerHeight;
 let parts=[];
-function explode(){
-  const text="PRAJWAL";
-  for(let i=0;i<text.length*30;i++){
+function boom(x,y){
+  for(let i=0;i<80;i++){
     parts.push({
-      x:innerWidth/2,
-      y:innerHeight/2,
-      vx:(Math.random()-0.5)*6,
-      vy:(Math.random()-0.5)*6,
-      life:80
+      x,y,
+      vx:(Math.random()-.5)*8,
+      vy:(Math.random()-.5)*8,
+      life:100
     });
   }
 }
-setInterval(explode,1500);
-
+setInterval(()=>boom(Math.random()*f.width,Math.random()*f.height/2),1200);
 function fire(){
   fx.clearRect(0,0,f.width,f.height);
   parts.forEach((p,i)=>{
@@ -223,10 +267,8 @@ fire();
 
 /* SHARE */
 function shareWhatsApp(){
-  const msg=encodeURIComponent("🎉 Happy Birthday Prajwal 🎂✨");
-  window.open(`https://wa.me/?text=${msg}`);
+  window.open("https://wa.me/?text="+encodeURIComponent("🎉 Happy Birthday Prajwal 🎂✨"));
 }
 </script>
-
 </body>
 </html>
