@@ -1,4 +1,4 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -60,6 +60,7 @@ canvas{
   font-size:16px;
   z-index:20;
   box-shadow:0 0 20px #0ff;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -67,9 +68,10 @@ canvas{
 <body>
 
 <!-- 🎵 MUSIC -->
-<audio id="music" loop>
+<audio id="music" loop preload="auto">
   <source src="./birthday.mp3" type="audio/mpeg">
 </audio>
+
 <button id="playBtn">🎵 Tap to Start</button>
 
 <div class="container">
@@ -96,10 +98,22 @@ function startAll(){
   if(started) return;
   started = true;
 
-  music.volume = 0.8;
+  // Skip first 10 seconds
+  music.currentTime = 10;
+  music.volume = 0;
   music.play().catch(()=>{});
-  btn.style.display="none";
 
+  // Smooth fade-in
+  let vol = 0;
+  const fade = setInterval(()=>{
+    vol += 0.05;
+    music.volume = Math.min(vol, 0.8);
+    if(vol >= 0.8) clearInterval(fade);
+  }, 120);
+
+  btn.style.display = "none";
+
+  // Voice message
   const msg = new SpeechSynthesisUtterance("Happy Birthday Prajwal");
   msg.rate = 0.9;
   msg.pitch = 1.1;
